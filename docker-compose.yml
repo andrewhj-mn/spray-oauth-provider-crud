@@ -1,0 +1,7 @@
+postgres:
+  image: postgres
+  environment:
+    - POSTGRES_USER=oauth
+    - POSTGRES_PASSWORD=oauth
+  ports:
+    - 32768:5432
