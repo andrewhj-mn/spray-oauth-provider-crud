@@ -1,14 +1,12 @@
 package net.andrewhj.oauth.business.user.controller
 
-import net.andrewhj.oauth.helpers.CrudRepository
-import net.andrewhj.oauth.{ DatabaseCfg, Users }
 import net.andrewhj.oauth.business.user.entity.User
+import net.andrewhj.oauth.helpers.ReadWriteRepository
+import net.andrewhj.oauth.{ DatabaseCfg, Users }
 
-import scala.slick.backend.DatabaseComponent
 import scala.slick.jdbc.JdbcBackend
-import scala.slick.jdbc.JdbcBackend.DatabaseDef
 
-trait UserRepository extends CrudRepository[User, String] {
+trait UserRepository extends ReadWriteRepository[User, String] {
 }
 
 //abstract class UserRepositoryRelational(db: DatabaseComponent#DatabaseDef) extends UserRepository {
@@ -32,7 +30,23 @@ abstract class RelationalUserRepository(db: JdbcBackend#DatabaseDef) extends Use
 
   override def update(a: User): User = ???
 
-  override def delete(b: String): Unit = ???
+  //  override def update(a: User): User = db withSession { implicit session ⇒
+  //    val q = for {
+  //      user ← tableQuery if user.userName == a.userName
+  //    } yield user.password.?
+  //
+  //    //      yield (user.password.?, user.firstName.?, user.lastName.?)
+  //    q.update(a.password)
+  //    //    q.update((a.password, a.firstName, a.lastName))
+  //    //    q.update(a)
+  //    //    tableQuery.filter(_.userName === a.userName).map(u => )
+  //
+  //    //    tableQuery.filter(_.userName === a.userName).update(a)
+  //  }
+
+  override def delete(b: String): Unit = db withSession { implicit session ⇒
+    tableQuery.filter(_.userName === b).delete
+  }
 }
 
 object Slick$UserRepository extends RelationalUserRepository(DatabaseCfg.db)

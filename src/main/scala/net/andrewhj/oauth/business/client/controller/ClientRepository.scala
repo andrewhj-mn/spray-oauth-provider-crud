@@ -2,19 +2,16 @@ package net.andrewhj.oauth.business.client.controller
 
 import java.util.UUID
 
-import net.andrewhj.oauth.{ Clients, Users }
+import net.andrewhj.oauth.Clients
 import net.andrewhj.oauth.business.client.entity.Client
-import net.andrewhj.oauth.business.user.entity.User
-import net.andrewhj.oauth.helpers.CrudRepository
+import net.andrewhj.oauth.helpers.ReadWriteRepository
 
 import scala.slick.jdbc.JdbcBackend
-import scala.slick.lifted
-import scala.slick.lifted.AbstractTable
 
 /**
  * A repository for working on Clients
  */
-trait ClientRepository extends CrudRepository[Client, UUID] {
+trait ClientRepository extends ReadWriteRepository[Client, UUID] {
 }
 
 //trait RelationalRepository[I, IID, TBL <: AbstractTable[TBL]] extends CrudRepository[I, IID] {

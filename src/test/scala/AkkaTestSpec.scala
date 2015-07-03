@@ -17,3 +17,6 @@ abstract class AkkaTestSpec(actorSystem: ActorSystem) extends TestKit(actorSyste
 
   override protected def afterAll(): Unit = shutdown()
 }
+
+abstract class ControllerTestSpec extends WordSpecLike with Matchers with MockFactory {
+}

@@ -3,7 +3,7 @@ import spray.routing.HttpService
 import spray.testkit.ScalatestRouteTest
 
 abstract class FlatSpraySpec extends FunSpec with ScalatestRouteTest
-
+// TODO: remove this when you don't need the example hanging around.
 class BasicSprayTest extends FlatSpraySpec with HttpService {
   def actorRefFactory = system // connect the DSL to the test ActorSystem
 
