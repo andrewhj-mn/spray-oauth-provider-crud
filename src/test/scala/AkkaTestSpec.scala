@@ -10,7 +10,7 @@ import org.scalamock.scalatest.MockFactory
 import org.scalatest.{ BeforeAndAfterAll, Matchers, WordSpecLike }
 
 /**
- * Created by ajohnson on 7/1/15.
+ * Helper class to hold common ancestry and functions6 (should also make compilation faster)
  */
 abstract class AkkaTestSpec(actorSystem: ActorSystem) extends TestKit(actorSystem) with DefaultTimeout with ImplicitSender with WordSpecLike with Matchers
     with MockFactory with BeforeAndAfterAll {

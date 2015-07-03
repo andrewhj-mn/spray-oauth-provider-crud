@@ -67,5 +67,4 @@ class UserActorTest extends AkkaTestSpec(ActorSystem("UserActorSpec")) {
     }
   }
 
-  //  override protected def afterAll(): Unit = shutdown()
 }

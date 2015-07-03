@@ -22,8 +22,11 @@ class ClientActor(clientRepository: ClientRepository) extends Actor with ActorLo
   import net.andrewhj.oauth.business.client.boundary.ClientActor.{ FindClient, ClientCreated, CreateClient, FindAllClients }
   override def receive: Receive = {
     case FindAllClients ⇒ sender ! clientRepository.findAll
-    case FindClient(id) ⇒ sender ! clientRepository.findOne(id)
+    case FindClient(id) ⇒
+      log.debug(s"Looking up $id")
+      sender ! clientRepository.findOne(id)
     case CreateClient(c) ⇒
+      log.info("Creating new client")
       val client = clientRepository.create(c)
       sender ! ClientCreated(client)
   }
