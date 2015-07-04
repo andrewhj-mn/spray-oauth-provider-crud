@@ -56,7 +56,7 @@ class AccessTokens(tag: Tag) extends Table[AccessToken](tag, "scala_oauth_access
 
   def expires = column[Date]("expires", O.NotNull)
 
-  def scope = column[String]("scope")
+  def scope = column[String]("scope", O.Nullable)
 
   override def * = (id, clientId, userId, expires, scope.?) <> (AccessToken.tupled, AccessToken.unapply)
 

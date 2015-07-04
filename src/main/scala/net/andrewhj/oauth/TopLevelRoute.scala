@@ -4,6 +4,7 @@ import java.util.concurrent.TimeUnit
 
 import akka.actor.Props
 import akka.util.Timeout
+import net.andrewhj.oauth.business.authorization.boundary.{ AccessTokenResource, AuthorizationResource }
 import spray.routing._
 
 /**
@@ -16,7 +17,7 @@ trait DefaultTimeout {
 trait TopLevelRoute extends RouteConcatenation {
   this: BootSystem ⇒
 
-  val routes = new HelloRoute().route
+  val routes = new AuthorizationResource().route ~ new AccessTokenResource().route
 
   //    new TodoApi().route ~ new OauthApi().route ~ new HashApi().route ~ new AuthorizeApi().route ~ new TokenApi().route ~ new UserApi().route
 

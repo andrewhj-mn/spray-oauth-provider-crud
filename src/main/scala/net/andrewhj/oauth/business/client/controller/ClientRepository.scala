@@ -2,7 +2,7 @@ package net.andrewhj.oauth.business.client.controller
 
 import java.util.UUID
 
-import net.andrewhj.oauth.Clients
+import net.andrewhj.oauth.{ DatabaseCfg, Clients }
 import net.andrewhj.oauth.business.client.entity.Client
 import net.andrewhj.oauth.helpers.ReadWriteRepository
 
@@ -39,8 +39,18 @@ trait ClientRepository extends ReadWriteRepository[Client, UUID] {
 
 //abstract class RelationalClientRepository(db: JdbcBackend#DatabaseDef) extends RelationalRepository[Client, UUID, Clients] {
 //abstract class RelationalClientRepository(db: JdbcBackend#DatabaseDef) extends ClientRepository {
-abstract class RelationalClientRepository(db: JdbcBackend#DatabaseDef, tableQuery: scala.slick.lifted.TableQuery[Clients]) extends ClientRepository {
-
+trait SlickStuff {
+  def db: JdbcBackend#DatabaseDef
+  def tableQuery: scala.slick.lifted.TableQuery[Clients]
+}
+trait PostgresSlickStuff extends SlickStuff {
+  import scala.slick.driver.PostgresDriver.simple._
+  override val db = DatabaseCfg.db
+  override val tableQuery = DatabaseCfg.clientsTable
+}
+abstract class RelationalClientRepository extends ClientRepository {
+  //(db: JdbcBackend#DatabaseDef, tableQuery: scala.slick.lifted.TableQuery[Clients]) extends ClientRepository {
+  this: SlickStuff ⇒
   import scala.slick.driver.PostgresDriver.simple._
 
   //  val tableQuery = TableQuery[Clients]
@@ -64,3 +74,6 @@ abstract class RelationalClientRepository(db: JdbcBackend#DatabaseDef, tableQuer
     allUsers
   }
 }
+
+object SlickRelationalClientRepository extends RelationalClientRepository with PostgresSlickStuff
+//(DatabaseCfg.db, DatabaseCfg.clientsTable)

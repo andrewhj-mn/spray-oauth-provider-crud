@@ -3,14 +3,14 @@ package net.andrewhj.oauth.business.authorization.controller
 import java.util.UUID
 
 import net.andrewhj.oauth.helpers.ReadWriteRepository
-import net.andrewhj.oauth.{ AccessToken, AccessTokens }
+import net.andrewhj.oauth.{ DatabaseCfg, AccessToken, AccessTokens }
 
 import scala.slick.jdbc.JdbcBackend
 
 trait TokenRepository extends ReadWriteRepository[AccessToken, UUID] {
 }
 
-class SlickRelationalTokenRepository(db: JdbcBackend#DatabaseDef, tableQuery: scala.slick.lifted.TableQuery[AccessTokens]) extends TokenRepository {
+class RelationalTokenRepository(db: JdbcBackend#DatabaseDef, tableQuery: scala.slick.lifted.TableQuery[AccessTokens]) extends TokenRepository {
   import scala.slick.driver.PostgresDriver.simple._
 
   override def findAll: List[AccessToken] = db withSession { implicit session ⇒
@@ -30,3 +30,4 @@ class SlickRelationalTokenRepository(db: JdbcBackend#DatabaseDef, tableQuery: sc
   }
 }
 
+object SlickRelationalTokenRepository extends RelationalTokenRepository(DatabaseCfg.db, DatabaseCfg.accessTokensTable)

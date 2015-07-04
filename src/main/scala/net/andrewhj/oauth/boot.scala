@@ -4,9 +4,20 @@ import akka.actor.{ Props, ActorSystem }
 import akka.io.IO
 import akka.util.Timeout
 import com.typesafe.config.ConfigFactory
+import net.andrewhj.oauth.business.authorization.boundary.AuthorizationResource
 import spray.can.Http
 import akka.pattern.ask
+import spray.routing.RouteConcatenation
 import scala.concurrent.Await
+
+trait ResourceService extends RouteConcatenation {
+  this: BootSystem ⇒
+
+  val routes = new AuthorizationResource().route
+
+  val routeService = actorSystem.actorOf(Props(new ApplicationApiActor(routes)))
+
+}
 
 object Boot {
   implicit val system = ActorSystem("spray-oauth-provider-crud")
@@ -39,7 +50,7 @@ trait BootSystem {
   /**
    * Initialize database, propagate schema
    */
-  //  DatabaseConfig.init()
+  //  DatabaseCfg.init()
 
   val application = actorSystem.actorOf(Props[ApplicationActor], "application")
   Await.ready(application ? Startup(), timeout.duration)

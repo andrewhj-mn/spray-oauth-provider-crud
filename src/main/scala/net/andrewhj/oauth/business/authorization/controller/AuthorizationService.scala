@@ -26,7 +26,7 @@ class AuthorizationService(clientRepository: ClientRepository, authorizationCode
       .getOrElse(Left(ClientNotFound(clientId)))
   }
 
-  private def createAuthorizationCode(request: AuthorizeRequest): AuthorizationActor.AuthorizationCode = {
+  private def createAuthorizationCode(request: AuthorizeRequest): AuthorizationCode = {
     // create new authorization item
     val uuid = UUID.randomUUID()
     val expiration = Calendar.getInstance
@@ -35,7 +35,7 @@ class AuthorizationService(clientRepository: ClientRepository, authorizationCode
     val authorizationCode = authorizationCodeRepository.create(AuthorizationCode(uuid, request.clientId, "TODO!!",
       request.redirectUri, expiration.getTime, None))
     // send back auth code
-    AuthorizationActor.AuthorizationCode(authorizationCode.authorizationCode)
+    authorizationCode
   }
 
   /**
@@ -44,7 +44,7 @@ class AuthorizationService(clientRepository: ClientRepository, authorizationCode
    * displaying a login or authorization form to the user
    */
   def validateAuthorizeRequest(request: AuthorizeValidationRequest): AuthorizeValidationResponse =
-    authorizationCodeRepository findOne request.token map { authorizationCode: AuthorizationCode ⇒
+    authorizationCodeRepository findOne request map { authorizationCode: AuthorizationCode ⇒
       Right(ClientDetails(authorizationCode.clientId))
-    } getOrElse Left(TokenNotFound(request.token))
+    } getOrElse Left(TokenNotFound(request))
 }

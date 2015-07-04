@@ -8,14 +8,16 @@ import net.andrewhj.oauth.business.authorization.boundary.AuthorizationActor._
 import net.andrewhj.oauth.business.authorization.entity.AuthorizationCode
 import net.andrewhj.oauth.business.client.controller.ClientRepository
 import net.andrewhj.oauth.business.client.entity.Client
+import net.andrewhj.oauth.business.user.entity.User
 
 class AuthorizationServiceTest extends ControllerSuite {
   trait CredentialBuilder {
+    val user = User("test", Some("testpass"))
     val mockClientRepository = stub[ClientRepository]
     val mockAuthorizationCodeRepository = mock[AuthorizationCodeRepository]
     val authorizeController = new AuthorizationService(mockClientRepository, mockAuthorizationCodeRepository)
     val clientId = UUID.fromString("83baa3f2-7640-44ff-bbac-43f07156f91d")
-    val authorizeRequest = AuthorizeRequest(clientId, "localhost")
+    val authorizeRequest = AuthorizeRequest(clientId, "localhost", user.userName)
 
   }
 
@@ -27,7 +29,7 @@ class AuthorizationServiceTest extends ControllerSuite {
     calendar.add(Calendar.MONTH, 1)
     val expiration = calendar.getTime
 
-    val authorizationCode: AuthorizationCode = AuthorizationCode(authCode, clientId, "TODO!!",
+    val authorizationCode: AuthorizationCode = AuthorizationCode(authCode, clientId, user.userName,
       "localhost", expiration, None)
   }
   trait UncheckedCreate extends ValidCredentialBuilder {
@@ -66,13 +68,12 @@ class AuthorizationServiceTest extends ControllerSuite {
       "credentials are invalid" should {
         "return error" in new TokenBuilder {
           (mockAuthorizationCodeRepository findOne _).expects(authCode).returning(None) anyNumberOfTimes ()
-          //          (mockClientRepository findOne _).when(clientId).returns(None)
-          val code: AuthorizationActor.AuthorizeValidationRequest = AuthorizationActor.AuthorizationCode(authCode)
+          val code: AuthorizationActor.AuthorizeValidationRequest = authCode
           assert(authorizeController.validateAuthorizeRequest(code).isLeft)
         }
         "return client information" in new TokenBuilder {
           (mockAuthorizationCodeRepository findOne _).expects(authCode).returning(Some(authorizationCode))
-          val code: AuthorizationActor.AuthorizeValidationRequest = AuthorizationActor.AuthorizationCode(authCode)
+          val code: AuthorizationActor.AuthorizeValidationRequest = authCode
           assert(authorizeController.validateAuthorizeRequest(code).isRight)
         }
       }

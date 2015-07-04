@@ -35,7 +35,7 @@ object DatabaseCfg {
 
   def init() = {
     db.withTransaction { implicit session ⇒
-      if (MTable.getTables("oauth_clients").list.isEmpty) {
+      if (MTable.getTables("scala_oauth_clients").list.isEmpty) {
         tables foreach (t ⇒ t.ddl.create)
       }
     }
