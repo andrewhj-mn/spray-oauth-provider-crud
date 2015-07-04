@@ -3,14 +3,14 @@ package net.andrewhj.oauth.business.client.boundary
 import java.util.UUID
 
 import akka.actor.ActorSystem
-import net.andrewhj.oauth.business.AkkaTestSpec
+import net.andrewhj.oauth.business.AkkaTestSuite
 import net.andrewhj.oauth.business.client.boundary.ClientActor.{ FindClient, ClientCreated, CreateClient, FindAllClients }
 import net.andrewhj.oauth.business.client.controller.ClientRepository
 import net.andrewhj.oauth.business.client.entity.Client
 import scala.concurrent.duration._
 import org.scalamock._
 
-class ClientActorTest extends AkkaTestSpec(ActorSystem("ClientActorSpec")) {
+class ClientActorTest extends AkkaTestSuite(ActorSystem("ClientActorSpec")) {
   val actorProps = ClientActor.withRepository _
   val mockRepo = stub[ClientRepository]
   val userActor = system.actorOf(actorProps(mockRepo))

@@ -12,11 +12,11 @@ import org.scalatest.{ BeforeAndAfterAll, Matchers, WordSpecLike }
 /**
  * Helper class to hold common ancestry and functions6 (should also make compilation faster)
  */
-abstract class AkkaTestSpec(actorSystem: ActorSystem) extends TestKit(actorSystem) with DefaultTimeout with ImplicitSender with WordSpecLike with Matchers
+abstract class AkkaTestSuite(actorSystem: ActorSystem) extends TestKit(actorSystem) with DefaultTimeout with ImplicitSender with WordSpecLike with Matchers
     with MockFactory with BeforeAndAfterAll {
 
   override protected def afterAll(): Unit = shutdown()
 }
 
-abstract class ControllerTestSpec extends WordSpecLike with Matchers with MockFactory {
+abstract class ControllerSuite extends WordSpecLike with Matchers with MockFactory {
 }

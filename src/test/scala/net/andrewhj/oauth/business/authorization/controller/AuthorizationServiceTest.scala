@@ -2,14 +2,14 @@ package net.andrewhj.oauth.business.authorization.controller
 
 import java.util.{ Calendar, UUID }
 
-import net.andrewhj.oauth.business.ControllerTestSpec
+import net.andrewhj.oauth.business.ControllerSuite
 import net.andrewhj.oauth.business.authorization.boundary.AuthorizationActor
 import net.andrewhj.oauth.business.authorization.boundary.AuthorizationActor._
 import net.andrewhj.oauth.business.authorization.entity.AuthorizationCode
 import net.andrewhj.oauth.business.client.controller.ClientRepository
 import net.andrewhj.oauth.business.client.entity.Client
 
-class AuthorizationServiceTest extends ControllerTestSpec {
+class AuthorizationServiceTest extends ControllerSuite {
   trait CredentialBuilder {
     val mockClientRepository = stub[ClientRepository]
     val mockAuthorizationCodeRepository = mock[AuthorizationCodeRepository]

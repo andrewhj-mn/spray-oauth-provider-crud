@@ -2,7 +2,7 @@ package net.andrewhj.oauth.business.user.boundary
 
 import akka.actor.{ ActorRef, Props, ActorSystem }
 import akka.testkit.{ ImplicitSender, DefaultTimeout, TestKit, TestActorRef }
-import net.andrewhj.oauth.business.AkkaTestSpec
+import net.andrewhj.oauth.business.AkkaTestSuite
 import net.andrewhj.oauth.business.user.boundary.UserMessages._
 import net.andrewhj.oauth.business.user.controller.UserRepository
 import net.andrewhj.oauth.business.user.entity.User
@@ -12,7 +12,7 @@ import scala.concurrent.duration._
 
 //class UserActorTest extends TestKit(ActorSystem("UserActorSpec")) with DefaultTimeout with ImplicitSender with WordSpecLike
 //    with Matchers with MockFactory with BeforeAndAfterAll {
-class UserActorTest extends AkkaTestSpec(ActorSystem("UserActorSpec")) {
+class UserActorTest extends AkkaTestSuite(ActorSystem("UserActorSpec")) {
   val actorProps = UserActor.withRepository _
   val mockRepo = stub[UserRepository]
   val userActor = system.actorOf(actorProps(mockRepo))
