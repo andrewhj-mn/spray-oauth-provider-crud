@@ -29,8 +29,7 @@ object DatabaseCfg {
 
   def blash() = {
     db.withSession(implicit session ⇒
-      usersTable.run.toList
-    )
+      usersTable.run.toList)
   }
 
   def init() = {

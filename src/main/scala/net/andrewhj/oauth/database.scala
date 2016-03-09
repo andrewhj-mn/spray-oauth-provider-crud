@@ -12,7 +12,8 @@ import scala.slick.driver.JdbcProfile
 
 trait TimestampMapper {
   implicit val myMapper = MappedColumnType.base[Date, Timestamp](
-    d ⇒ new Timestamp(d.getTime), t ⇒ new Date(t.getTime))
+    d ⇒ new Timestamp(d.getTime), t ⇒ new Date(t.getTime)
+  )
 }
 
 class Users(tag: Tag) extends Table[User](tag, "oauth_users") {

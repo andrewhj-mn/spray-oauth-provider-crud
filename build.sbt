@@ -23,4 +23,4 @@ ScalariformKeys.preferences := ScalariformKeys.preferences.value
 
 Revolver.settings
 
-mainClass in Revolver.reStart := Some("core.Boot")
+mainClass in Revolver.reStart := Some("net.andrewhj.oauth.Boot")

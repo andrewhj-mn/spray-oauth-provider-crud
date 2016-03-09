@@ -15,7 +15,6 @@ class ApplicationApiActor(route: Route) extends HttpServiceActor with CustomErro
   override def receive: Receive = runRoute(route)(customExceptionHandler, RejectionHandler.Default, actorRefFactory,
     RoutingSettings.default(actorRefFactory), LoggingContext.fromActorContext(actorRefFactory))
 }
-
 /**
  * Custom error handler, If Api call can return OK or One error You can use eitherCustomErrorMarshaller to configure
  * what type of StatusCode should be returned
@@ -27,7 +26,7 @@ trait CustomErrorHandler extends Marshalling {
       case NonFatal(ErrorResponseException(statusCode, entity)) ⇒
         log.error(s"Application return expected error status code ${statusCode} with entity ${entity} ")
         ctx ⇒ ctx.complete((statusCode, entity))
-        case NonFatal(e) ⇒
+      case NonFatal(e) ⇒
         log.error(s"Application return unexpected error with exception ${e}")
         ctx ⇒ ctx.complete(StatusCodes.InternalServerError)
     }
